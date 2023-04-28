@@ -7,32 +7,37 @@ class BlueSquareAnimation {
         this.moveDown = true;
         this.windowWidth = window.innerWidth - this.squareElement.clientWidth;
         this.windowHeight = window.innerHeight - this.squareElement.clientHeight;
+
+        //Change these values for smoother animation 
+        this.moveFromX = 10; //in px
+        this.moveFromY = 10; //in px
+        this.moveInterval = 1; //in sec
     }
 
     start() {
         this.intervalId = setInterval(() => {
             this.moveSquare();
-        }, 10);
+        }, this.moveInterval * 1000);
     }
 
     moveSquare() {
         //Moving on X axis
         if (this.moveRight) {
-            this.squareX += 1;
+            this.squareX += this.moveFromX;
             if (this.squareX >= this.windowWidth) this.moveRight = false;
         } 
         else {
-            this.squareX -= 1;
+            this.squareX -= this.moveFromX;
             if (this.squareX <= 0) this.moveRight = true;
         }
 
         //Moving on Y axis
         if (this.moveDown) {
-            this.squareY += 1;
+            this.squareY += this.moveFromY;
             if (this.squareY >= this.windowHeight) this.moveDown = false;
         } 
         else {
-            this.squareY -= 1;
+            this.squareY -= this.moveFromY;
             if (this.squareY <= 0) this.moveDown = true;
         }
         
