@@ -1,5 +1,5 @@
 <?php 
-class DisplayService extends ArrayObject {
+class Output extends ArrayObject {
 
     public function displayAsTable() : string 
     {
