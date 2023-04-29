@@ -1,0 +1,63 @@
+version: '3.5'
+
+services:
+    animation:
+        container_name: field-nation-animation
+        image: tanjed/field-nation-animation
+        build:
+            context: .
+            dockerfile: DockerFile
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www/html
+        volumes:
+            - ./src/Animation:/var/www/html
+        networks:
+            - field-nation
+    display:
+        container_name: field-nation-display
+        image: tanjed/field-nation-display
+        build:
+            context: .
+            dockerfile: DockerFile
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www/html
+        volumes:
+            - ./src/Display:/var/www/html
+        networks:
+            - field-nation
+    nginx:
+        container_name: field-nation-nginx
+        image: nginx:alpine
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+        volumes:
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d
+            - ./src:/var/www/html
+        networks:
+            - field-nation
+    db:
+        image: mysql:8
+        container_name: field-nation-db
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./docker/mysql/data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: assessment
+            MYSQL_USER: field-nation
+            MYSQL_PASSWORD: field-nation
+        networks:
+            - field-nation
+networks:
+    field-nation:
+        name: field-nation
+        driver: bridge
+
+
